@@ -57,11 +57,4 @@ public class Cat implements Serializable {
         }
         return this;
     }
-
-    public static class CatBuilder {
-        public CatBuilder owners(List<Owner> owners) {
-            this.owners = new ArrayList<>(owners);
-            return this;
-        }
-    }
 }

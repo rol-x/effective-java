@@ -1,6 +1,5 @@
 package com.codeshop.effective.infrastructure.io;
 
-import com.codeshop.effective.domain.model.Cat;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;

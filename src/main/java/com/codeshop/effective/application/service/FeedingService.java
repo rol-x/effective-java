@@ -6,8 +6,6 @@ import com.codeshop.effective.domain.repository.CatRepository;
 import com.codeshop.effective.domain.service.CatFeedingService;
 import lombok.RequiredArgsConstructor;
 
-import java.util.UUID;
-
 @RequiredArgsConstructor
 public class FeedingService {
     private final CatRepository catRepository;

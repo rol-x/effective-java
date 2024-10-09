@@ -42,11 +42,10 @@ public class Owner implements Serializable {
         return Objects.hash(id);
     }
 
-    public Owner addCat(Cat cat) {
+    public void addCat(Cat cat) {
         if (!cats.contains(cat)) {
             cats.add(cat);
             cat.addOwner(this);
         }
-        return this;
     }
 }

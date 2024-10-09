@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -18,6 +19,11 @@ import java.util.UUID;
 @RequestMapping("/cats")
 public class CatsController {
     private final CatService catService;
+
+    @GetMapping
+    public List<Cat> findAllCats() {
+        return catService.getAllCats();
+    }
 
     @GetMapping("/{catId}")
     public Cat findCat(@PathVariable UUID catId) {

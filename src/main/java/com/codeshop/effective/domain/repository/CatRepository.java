@@ -7,9 +7,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CatRepository {
-    List<Cat> findAll();
+    Cat save(Cat cat);
 
     Optional<Cat> findById(UUID id);
 
-    Cat save(Cat cat);
+    List<Cat> findAll();
 }

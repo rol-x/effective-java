@@ -1,7 +1,7 @@
 package com.codeshop.effective.infrastructure.repository;
 
-import com.codeshop.effective.domain.model.Cat;
-import com.codeshop.effective.domain.repository.CatRepository;
+import com.codeshop.effective.domain.model.Owner;
+import com.codeshop.effective.domain.repository.OwnerRepository;
 import com.codeshop.effective.infrastructure.io.FileStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -15,33 +15,33 @@ import java.util.WeakHashMap;
 
 @Repository
 @RequiredArgsConstructor
-public class InMemoryCatRepository implements CatRepository {
+public class InMemoryOwnerRepository implements OwnerRepository {
     private final FileStorage fileStorage;
 
     // 7. Usuwanie niepotrzebnych referencji do obiektów
-    private Map<UUID, Cat> cats = new WeakHashMap<>();
+    private Map<UUID, Owner> owners = new WeakHashMap<>();
 
     @Override
-    public List<Cat> findAll() {
-        return new ArrayList<>(cats.values());
+    public List<Owner> findAll() {
+        return new ArrayList<>(owners.values());
     }
 
     @Override
-    public Optional<Cat> findById(UUID id) {
-        return Optional.ofNullable(cats.get(id));
+    public Optional<Owner> findById(UUID id) {
+        return Optional.ofNullable(owners.get(id));
     }
 
     @Override
-    public Cat save(Cat cat) {
-        cats.put(cat.getId(), cat);
-        return cat;
+    public Owner save(Owner owner) {
+        owners.put(owner.getId(), owner);
+        return owner;
     }
 
     public void saveToFile(String fileName) {
-        fileStorage.save(cats, fileName);
+        fileStorage.save(owners, fileName);
     }
 
     public void loadFromFile(String fileName) {
-        cats = fileStorage.load(fileName, Cat.class);
+        owners = fileStorage.load(fileName, Owner.class);
     }
 }

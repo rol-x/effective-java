@@ -1,4 +1,5 @@
 package com.codeshop.effective.application.dto;
 
-public class FeedingRecordDto {
-}
+import java.util.UUID;
+
+public record FeedingRecordDto(UUID catId, int amount) {}

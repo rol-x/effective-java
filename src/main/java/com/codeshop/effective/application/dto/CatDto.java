@@ -1,3 +1,6 @@
 package com.codeshop.effective.application.dto;
 
-public record CatDto (String name, int age, String favoriteFood) {}
+import java.time.LocalDate;
+import java.util.UUID;
+
+public record CatDto (String name, LocalDate birthDate, UUID primaryOwnerId) {}

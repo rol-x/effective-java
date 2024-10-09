@@ -1,36 +1,40 @@
 package com.codeshop.effective.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Getter
-@Setter
 @Builder
 public class Cat implements Serializable {
     @Serial private static final long serialVersionUID = 1L;
 
     private final UUID id;
     private String name;
-    private int age;
-    private String favoriteFood;
+    private LocalDate birthDate;
+    @JsonManagedReference
+    private List<Owner> owners;
     private LocalDateTime lastFedTime;
 
     public FeedingRecord feed(int amount) {
-        lastFedTime = LocalDateTime.now();
-        return FeedingRecord.create(amount, lastFedTime); // 1. Statyczne metody fabryczne zamiast konstruktorów
+        var feedingRecord = FeedingRecord.create(id, amount);   // 1. Statyczne metody fabryczne zamiast konstruktorów
+        lastFedTime = feedingRecord.getDate();
+        return feedingRecord;
     }
 
-    @Override
+    @Override                                       // 12. Przedefiniowanie toString - zapewnienie czytelności
     public String toString() {
-        return "Cat{id='%s', name='%s', age=%d, favoriteFood='%s', lastFedTime='%s'}"
-            .formatted(id, name, age, favoriteFood, lastFedTime);
+        return "Cat{id='%s', name='%s', birthDate=%s, owners='%s', lastFedTime='%s'}"
+            .formatted(id, name, birthDate, owners.stream().map(Owner::getName).toList(), lastFedTime);
     }
 
     @Override
@@ -38,11 +42,26 @@ public class Cat implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cat cat = (Cat) o;
-        return Objects.equals(id, cat.id);
+        return Objects.equals(id, cat.id);          // 10. Przedefiniowanie equals - semantyka encji (równość po ID)
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id);                    // 11. Przedefiniowanie hashCode - równomierny rozkład obiektów
+    }
+
+    public Cat addOwner(Owner owner) {
+        if (!owners.contains(owner)) {
+            owners.add(owner);
+            owner.addCat(this);
+        }
+        return this;
+    }
+
+    public static class CatBuilder {
+        public CatBuilder owners(List<Owner> owners) {
+            this.owners = new ArrayList<>(owners);
+            return this;
+        }
     }
 }

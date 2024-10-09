@@ -6,6 +6,8 @@ import com.codeshop.effective.infrastructure.io.FileStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,6 +20,11 @@ public class InMemoryCatRepository implements CatRepository {
 
     // 7. Usuwanie niepotrzebnych referencji do obiektów
     private Map<UUID, Cat> cats = new WeakHashMap<>();
+
+    @Override
+    public List<Cat> findAll() {
+        return new ArrayList<>(cats.values());
+    }
 
     @Override
     public Optional<Cat> findById(UUID id) {
